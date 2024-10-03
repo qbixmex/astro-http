@@ -4,17 +4,40 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["./src/api/*"],
-      "@icons/*": ["./src/icons/*"],
-      "@components/*": ["./src/components/*"],
-      "@layouts/*": ["./src/layouts/*"],
-      "@services/*": ["./src/services/*"],
-      "@data/*": ["./src/data/*"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@config/*": ["./src/config/*"],
-      "@images/*": ["./src/assets/images/*"],
+      "@api/*": [
+        "./src/api/*"
+      ],
+      "@icons/*": [
+        "./src/icons/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@layouts/*": [
+        "./src/layouts/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@data/*": [
+        "./src/data/*"
+      ],
+      "@interfaces/*": [
+        "./src/interfaces/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@images/*": [
+        "./src/assets/images/*"
+      ]
     },
-  },
+    "jsx": "preserve"
+  }
 }
