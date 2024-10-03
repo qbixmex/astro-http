@@ -17,16 +17,6 @@ const { Content } = await post.render();
 ---
 
 <BlogPost {...post.data}>
-	<h2>Likes</h2>
-
-	<div style={{
-		display: "flex",
-		justifyContent: "start",
-		alignItems: "center",
-		height: "50px",
-	}}>
-		<LikeCounter postId={ post.id } client:only="vue" />
-	</div>
-
+	<LikeCounter postId={ post.id } client:only="vue" />
 	<Content />
 </BlogPost>

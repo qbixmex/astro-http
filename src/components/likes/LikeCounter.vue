@@ -1,22 +1,19 @@
 <template>
   <div class="likeSection">
     <div v-if="isLoading" class="loading"></div>
-
     <button v-else-if="likeCount === 0" @click="likePost">
       Like it!
     </button>
 
     <button v-else @click="likePost">
       <span>Likes</span>{{" "}}
-      <span>({{ likeCount }})</span>
+      <span class="like-count">{{ likeCount }}</span>
     </button>
-
-    <p>{{ likeClicks }}</p>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import confetti from 'canvas-confetti';
 
 type Props = {
@@ -28,6 +25,18 @@ const props = defineProps<Props>();
 const likeCount = ref(0);
 const likeClicks = ref(0);
 const isLoading = ref(true);
+
+watch(likeCount, async () => {
+  await fetch(`/api/posts/likes/${props.postId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ likes: likeClicks.value }),
+  });
+
+  likeClicks.value = 0;
+});
 
 const likePost = () => {
   likeCount.value++;
@@ -60,9 +69,19 @@ getCurrentLikes();
 </script>
 
 <style scoped>
+  .likeSection {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
   button {
-    display: inline-block;
-    width: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
     background-color: #5351bc;
     color: white;
     padding: 10px 20px;
@@ -70,17 +89,21 @@ getCurrentLikes();
     border-radius: 8px;
     cursor: pointer;
     transition: all 300ms ease-in-out;
+    height: auto;
+  }
+
+  .like-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: hsl(310, 80%, 50%);
+    padding: 5px;
+    border-radius: 50%;
+    font-weight: 500;
   }
 
   button:hover {
     background-color: #4a3f9a;
-  }
-
-  .likeSection {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 
   .loading {
