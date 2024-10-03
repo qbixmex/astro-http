@@ -4,7 +4,7 @@ import mdx from '@astrojs/mdx';
 
 import sitemap from '@astrojs/sitemap';
 
-import node from '@astrojs/node';
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +12,5 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
   output: 'hybrid',
 
-  adapter: node({
-    mode: 'standalone',
-  }),
+  adapter: cloudflare(),
 });
