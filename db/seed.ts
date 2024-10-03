@@ -1,6 +1,5 @@
 import { getCollection } from "astro:content";
 import { Clients, Posts, db } from "astro:db";
-import crypto from "node:crypto";
 
 // https://astro.build/db/seed
 export default async function() {
@@ -62,7 +61,7 @@ export default async function() {
 	await db.insert(Posts)
 		.values(
 			postsCollection.map((post) => ({
-				id: crypto.randomUUID(),
+				id: post.id,
 				title: post.data.title,
 				likes: Math.round(Math.random() * 100),
 			}))

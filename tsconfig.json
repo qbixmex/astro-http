@@ -38,6 +38,7 @@
         "./src/assets/images/*"
       ]
     },
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": ["vue"]
   }
 }
