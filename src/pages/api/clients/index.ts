@@ -1,63 +1,14 @@
 import type { APIRoute } from "astro";
+import { Clients, db } from "astro:db";
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params, request }) => {
-  const clients = [
-    {
-      id: 1,
-      name: "Michael Jackson",
-      age: 50,
-      country: "USA",
-      city: "Gary",
-      state: "Indiana",
-      nationality: "American",
-      isActive: false
-    },
-    {
-      id: 2,
-      name: "Jackie Chan",
-      age: 70,
-      country: "China",
-      city: "Hong Kong",
-      state: "Hong Kong",
-      nationality: "Chinese",
-      isActive: true
-    },
-    {
-      id: 3,
-      name: "Jim Carrey",
-      age: 60,
-      country: "Canada",
-      city: "Newmarket",
-      state: "Ontario",
-      nationality: "Canadian",
-      isActive: true
-    },
-    {
-      id: 4,
-      name: "Dwayne Johnson",
-      age: 50,
-      country: "USA",
-      city: "Hayward",
-      state: "California",
-      nationality: "American",
-      isActive: true
-    },
-    {
-      id: 5,
-      name: "Madonna Louise Ciccone",
-      age: 60,
-      country: "USA",
-      city: "Bay City",
-      state: "Michigan",
-      nationality: "American",
-      isActive: true
-    },
-  ];
+  const clients = await db.select().from(Clients).limit(10);
 
   return new Response(JSON.stringify({
-    method: "GET",
+    ok: true,
+    message: "Clients fetched successfully 👍🚀🐱🌮",
     clients,
   }), {
     status: 200,
@@ -69,15 +20,56 @@ export const GET: APIRoute = async ({ params, request }) => {
 
 export const POST: APIRoute = async ({ params, request }) => {
 
-  const body = await request.json();
+  try {
+    const {id, ...body } = await request.json();
 
-  return new Response(JSON.stringify({
-    method: "POST",
-    client: body,
-  }), {
-    status: 201,
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
+    if (id) {
+      throw new Error("Client id must not be provided");
+    }
+
+    if (!body) {
+      throw new Error("Client body must be provided");
+    }
+
+    const { lastInsertRowid: clientId } = await db.insert(Clients).values(body);
+
+    return new Response(JSON.stringify({
+      ok: true,
+      message: "Client created successfully 👍🚀🐱🌮",
+      client: {
+        id: +clientId!.toString(),
+        ...body
+      }
+    }), {
+      status: 201,
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return new Response(JSON.stringify({
+        ok: false,
+        message: `${error.message}`,
+      }), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+    }
+
+    console.log(error);
+
+    return new Response(JSON.stringify({
+      ok: false,
+      message: "Unknown error, check logs",
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+  }
+
 };
