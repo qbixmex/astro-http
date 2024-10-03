@@ -1,11 +1,12 @@
 {
   "name": "06-astro-http",
   "type": "module",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build:dev": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
