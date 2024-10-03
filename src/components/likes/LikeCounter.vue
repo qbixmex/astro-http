@@ -10,11 +10,14 @@
       <span>Likes</span>{{" "}}
       <span>({{ likeCount }})</span>
     </button>
+
+    <p>{{ likeClicks }}</p>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
+import confetti from 'canvas-confetti';
 
 type Props = {
   postId: string;
@@ -27,7 +30,18 @@ const likeClicks = ref(0);
 const isLoading = ref(true);
 
 const likePost = () => {
-  console.log('Liked post 👍');
+  likeCount.value++;
+  likeClicks.value++;
+
+  confetti({
+    particleCount: 100,
+    startVelocity: 30,
+    spread: 360,
+    origin: {
+      x: Math.random(),
+      y: Math.random() - 0.2,
+    },
+  })
 };
 
 const getCurrentLikes = async () => {
