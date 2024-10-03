@@ -1,8 +1,10 @@
-import { Clients, db } from "astro:db";
+import { getCollection } from "astro:content";
+import { Clients, Posts, db } from "astro:db";
+import crypto from "node:crypto";
 
 // https://astro.build/db/seed
-export default async function seed() {
-	await db.insert(Clients).values([
+export default async function() {
+  await db.insert(Clients).values([
 		{
 			id: 1,
 			name: "Michael Jackson",
@@ -54,5 +56,17 @@ export default async function seed() {
 			isActive: true
 		},
 	]);
+
+	const postsCollection = await getCollection("blog");
+
+	await db.insert(Posts)
+		.values(
+			postsCollection.map((post) => ({
+				id: crypto.randomUUID(),
+				title: post.data.title,
+				likes: Math.round(Math.random() * 100),
+			}))
+		);
+
 	console.log("Seed Executed 👍🚀");
 }

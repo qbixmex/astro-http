@@ -19,9 +19,9 @@ export const GET: APIRoute = async ({ params, request }) => {
 };
 
 export const POST: APIRoute = async ({ params, request }) => {
+  const {id, ...body } = await request.json();
 
   try {
-    const {id, ...body } = await request.json();
 
     if (id) {
       throw new Error("Client id must not be provided");
